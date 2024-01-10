@@ -13,7 +13,7 @@ export default {
     {
       path: "/able/videoFrame",
       name: "VideoFrame",
-      component: () => import("@/views/able/video-frame/index.vue"),
+      component: () => import("@/views/tool/able/video-frame/index.vue"),
       meta: {
         title: $t("menus.hsVideoFrame"),
         extraIcon: "IF-pure-iconfont-new svg"
@@ -22,7 +22,7 @@ export default {
     {
       path: "/able/wavesurfer",
       name: "Wavesurfer",
-      component: () => import("@/views/able/wavesurfer/index.vue"),
+      component: () => import("@/views/tool/able/wavesurfer/index.vue"),
       meta: {
         title: $t("menus.hsWavesurfer"),
         extraIcon: "IF-pure-iconfont-new svg"
@@ -31,7 +31,7 @@ export default {
     {
       path: "/able/directives",
       name: "Directives",
-      component: () => import("@/views/able/directives.vue"),
+      component: () => import("@/views/tool/able/directives.vue"),
       meta: {
         title: $t("menus.hsOptimize")
       }
@@ -39,7 +39,7 @@ export default {
     {
       path: "/able/watermark",
       name: "WaterMark",
-      component: () => import("@/views/able/watermark.vue"),
+      component: () => import("@/views/tool/able/watermark.vue"),
       meta: {
         title: $t("menus.hsWatermark")
       }
@@ -47,7 +47,7 @@ export default {
     {
       path: "/able/print",
       name: "Print",
-      component: () => import("@/views/able/print/index.vue"),
+      component: () => import("@/views/tool/able/print/index.vue"),
       meta: {
         title: $t("menus.hsPrint")
       }
@@ -55,7 +55,7 @@ export default {
     {
       path: "/able/download",
       name: "Download",
-      component: () => import("@/views/able/download.vue"),
+      component: () => import("@/views/tool/able/download.vue"),
       meta: {
         title: $t("menus.hsDownload")
       }
@@ -63,7 +63,7 @@ export default {
     {
       path: "/able/iconSelect",
       name: "IconSelect",
-      component: () => import("@/views/able/icon-select.vue"),
+      component: () => import("@/views/tool/able/icon-select.vue"),
       meta: {
         title: $t("menus.hsIconSelect")
       }
@@ -71,7 +71,7 @@ export default {
     {
       path: "/able/timeline",
       name: "TimeLine",
-      component: () => import("@/views/able/timeline.vue"),
+      component: () => import("@/views/tool/able/timeline.vue"),
       meta: {
         title: $t("menus.hsTimeline")
       }
@@ -79,7 +79,7 @@ export default {
     {
       path: "/able/menuTree",
       name: "MenuTree",
-      component: () => import("@/views/able/menu-tree.vue"),
+      component: () => import("@/views/tool/able/menu-tree.vue"),
       meta: {
         title: $t("menus.hsMenuTree")
       }
@@ -87,7 +87,7 @@ export default {
     {
       path: "/able/lineTree",
       name: "LineTree",
-      component: () => import("@/views/able/line-tree.vue"),
+      component: () => import("@/views/tool/able/line-tree.vue"),
       meta: {
         title: $t("menus.hsLineTree")
       }
@@ -95,7 +95,7 @@ export default {
     {
       path: "/able/debounce",
       name: "Debounce",
-      component: () => import("@/views/able/debounce.vue"),
+      component: () => import("@/views/tool/able/debounce.vue"),
       meta: {
         title: $t("menus.hsDebounce")
       }
@@ -103,7 +103,7 @@ export default {
     {
       path: "/able/barcode",
       name: "BarCode",
-      component: () => import("@/views/able/barcode.vue"),
+      component: () => import("@/views/tool/able/barcode.vue"),
       meta: {
         title: $t("menus.hsBarcode")
       }
@@ -111,7 +111,7 @@ export default {
     {
       path: "/able/qrcode",
       name: "QrCode",
-      component: () => import("@/views/able/qrcode.vue"),
+      component: () => import("@/views/tool/able/qrcode.vue"),
       meta: {
         title: $t("menus.hsQrcode")
       }
@@ -119,7 +119,7 @@ export default {
     {
       path: "/able/cascader",
       name: "Cascader",
-      component: () => import("@/views/able/cascader.vue"),
+      component: () => import("@/views/tool/able/cascader.vue"),
       meta: {
         title: $t("menus.hsCascader")
       }
@@ -127,7 +127,7 @@ export default {
     {
       path: "/able/swiper",
       name: "Swiper",
-      component: () => import("@/views/able/swiper.vue"),
+      component: () => import("@/views/tool/able/swiper.vue"),
       meta: {
         title: $t("menus.hsSwiper")
       }
@@ -135,7 +135,7 @@ export default {
     {
       path: "/able/virtualList",
       name: "VirtualList",
-      component: () => import("@/views/able/virtual-list/index.vue"),
+      component: () => import("@/views/tool/able/virtual-list/index.vue"),
       meta: {
         title: $t("menus.hsVirtualList")
       }
@@ -143,7 +143,7 @@ export default {
     {
       path: "/able/pdf",
       name: "Pdf",
-      component: () => import("@/views/able/pdf.vue"),
+      component: () => import("@/views/tool/able/pdf.vue"),
       meta: {
         title: $t("menus.hsPdf")
       }
@@ -151,7 +151,7 @@ export default {
     {
       path: "/able/excel",
       name: "Excel",
-      component: () => import("@/views/able/excel.vue"),
+      component: () => import("@/views/tool/able/excel.vue"),
       meta: {
         title: $t("menus.hsExcel")
       }
@@ -159,7 +159,7 @@ export default {
     {
       path: "/able/infiniteScroll",
       name: "InfiniteScroll",
-      component: () => import("@/views/able/infinite-scroll.vue"),
+      component: () => import("@/views/tool/able/infinite-scroll.vue"),
       meta: {
         title: $t("menus.hsInfiniteScroll")
       }
@@ -167,7 +167,7 @@ export default {
     {
       path: "/able/sensitive",
       name: "Sensitive",
-      component: () => import("@/views/able/sensitive.vue"),
+      component: () => import("@/views/tool/able/sensitive.vue"),
       meta: {
         title: $t("menus.hsSensitive"),
         extraIcon: "IF-pure-iconfont-new svg"
@@ -176,7 +176,7 @@ export default {
     {
       path: "/able/pinyin",
       name: "Pinyin",
-      component: () => import("@/views/able/pinyin.vue"),
+      component: () => import("@/views/tool/able/pinyin.vue"),
       meta: {
         title: $t("menus.hsPinyin"),
         extraIcon: "IF-pure-iconfont-new svg"

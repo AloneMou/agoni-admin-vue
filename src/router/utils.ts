@@ -5,9 +5,9 @@ import {
   createWebHistory,
   createWebHashHistory
 } from "vue-router";
-import { router } from "./index";
-import { isProxy, toRaw } from "vue";
-import { useTimeoutFn } from "@vueuse/core";
+import {router} from "./index";
+import {isProxy, toRaw} from "vue";
+import {useTimeoutFn} from "@vueuse/core";
 import {
   isString,
   cloneDeep,
@@ -16,24 +16,25 @@ import {
   storageLocal,
   isIncludeAllChildren
 } from "@pureadmin/utils";
-import { getConfig } from "@/config";
-import type { menuType } from "@/layout/types";
-import { buildHierarchyTree } from "@/utils/tree";
-import { userKey, type DataInfo } from "@/utils/auth";
-import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
-import { usePermissionStoreHook } from "@/store/modules/permission";
+import {getConfig} from "@/config";
+import type {menuType} from "@/layout/types";
+import {buildHierarchyTree} from "@/utils/tree";
+import {userKey, type DataInfo} from "@/utils/auth";
+import {useMultiTagsStoreHook} from "@/store/modules/multiTags";
+import {usePermissionStoreHook} from "@/store/modules/permission";
+
 const IFrame = () => import("@/layout/frameView.vue");
 // https://cn.vitejs.dev/guide/features.html#glob-import
 const modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
 
 // 动态路由
-import { getAsyncRoutes } from "@/api/routes";
+import {getAsyncRoutes} from "@/api/routes";
 
 function handRank(routeInfo: any) {
-  const { name, path, parentId, meta } = routeInfo;
+  const {name, path, parentId, meta} = routeInfo;
   return isAllEmpty(parentId)
     ? isAllEmpty(meta?.rank) ||
-      (meta?.rank === 0 && name !== "Home" && path !== "/")
+    (meta?.rank === 0 && name !== "Home" && path !== "/")
       ? true
       : false
     : false;
@@ -194,17 +195,19 @@ function initRouter() {
       });
     } else {
       return new Promise(resolve => {
-        getAsyncRoutes().then(({ data }) => {
-          handleAsyncRoutes(cloneDeep(data));
-          storageLocal().setItem(key, data);
+        getAsyncRoutes().then(({data}) => {
+          // console.log(">>>>>",data)
+          handleAsyncRoutes(cloneDeep(data.menus));
+          storageLocal().setItem(key, data.menus);
           resolve(router);
         });
       });
     }
   } else {
     return new Promise(resolve => {
-      getAsyncRoutes().then(({ data }) => {
-        handleAsyncRoutes(cloneDeep(data));
+      getAsyncRoutes().then(({data}) => {
+        // console.log("xxx",data.menus)
+        handleAsyncRoutes(cloneDeep(data.menus));
         resolve(router);
       });
     });
@@ -249,14 +252,14 @@ function formatTwoStageRoutes(routesList: RouteRecordRaw[]) {
         children: []
       });
     } else {
-      newRoutesList[0]?.children.push({ ...v });
+      newRoutesList[0]?.children.push({...v});
     }
   });
   return newRoutesList;
 }
 
 /** 处理缓存路由（添加、删除、刷新） */
-function handleAliveRoute({ name }: ToRouteType, mode?: string) {
+function handleAliveRoute({name}: ToRouteType, mode?: string) {
   switch (mode) {
     case "add":
       usePermissionStoreHook().cacheOperate({
@@ -295,6 +298,15 @@ function addAsyncRoutes(arrRoutes: Array<RouteRecordRaw>) {
   if (!arrRoutes || !arrRoutes.length) return;
   const modulesRoutesKeys = Object.keys(modulesRoutes);
   arrRoutes.forEach((v: RouteRecordRaw) => {
+    v.meta = {
+      title: v.name,
+      backstage: true,
+      icon: v.icon,
+    }
+    console.log(v)
+    if (!v.children) {
+      delete v.children;
+    }
     // 将backstage属性加入meta，标识此路由为后端返回路由
     v.meta.backstage = true;
     // 父级的redirect属性取值：如果子级存在且父级的redirect属性不存在，默认取第一个子级的path；如果子级存在且父级的redirect属性存在，取存在的redirect属性，会覆盖默认值

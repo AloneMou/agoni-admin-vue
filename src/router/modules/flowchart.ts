@@ -13,7 +13,7 @@ export default {
     {
       path: "/flowChart/index",
       name: "FlowChart",
-      component: () => import("@/views/flow-chart/index.vue"),
+      component: () => import("@/views/tool/flow-chart/index.vue"),
       meta: {
         title: $t("menus.hsflowChart")
       }

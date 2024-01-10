@@ -13,7 +13,7 @@ export default {
     {
       path: "/result/success",
       name: "Success",
-      component: () => import("@/views/result/success.vue"),
+      component: () => import("@/views/tool/result/success.vue"),
       meta: {
         title: $t("menus.hsSuccess")
       }
@@ -21,7 +21,7 @@ export default {
     {
       path: "/result/fail",
       name: "Fail",
-      component: () => import("@/views/result/fail.vue"),
+      component: () => import("@/views/tool/result/fail.vue"),
       meta: {
         title: $t("menus.hsFail")
       }

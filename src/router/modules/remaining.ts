@@ -5,7 +5,7 @@ export default [
   {
     path: "/login",
     name: "Login",
-    component: () => import("@/views/login/index.vue"),
+    component: () => import("@/views/tool/login/index.vue"),
     meta: {
       title: $t("menus.hslogin"),
       showLink: false,
@@ -32,7 +32,7 @@ export default [
   {
     path: "/empty",
     name: "Empty",
-    component: () => import("@/views/empty/index.vue"),
+    component: () => import("@/views/tool/empty/index.vue"),
     meta: {
       title: $t("menus.hsempty"),
       showLink: false,

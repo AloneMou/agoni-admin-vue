@@ -13,7 +13,7 @@ export default {
     {
       path: "/editor/index",
       name: "Editor",
-      component: () => import("@/views/editor/index.vue"),
+      component: () => import("@/views/tool/editor/index.vue"),
       meta: {
         title: $t("menus.hseditor"),
         keepAlive: true

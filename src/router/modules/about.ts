@@ -12,7 +12,7 @@ export default {
     {
       path: "/about/index",
       name: "About",
-      component: () => import("@/views/about/index.vue"),
+      component: () => import("@/views/tool/about/index.vue"),
       meta: {
         title: $t("menus.hsAbout")
       }

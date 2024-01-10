@@ -13,7 +13,7 @@ export default {
     {
       path: "/list/card",
       name: "ListCard",
-      component: () => import("@/views/list/card/index.vue"),
+      component: () => import("@/views/tool/list/card/index.vue"),
       meta: {
         icon: "card",
         title: $t("menus.hsListCard"),

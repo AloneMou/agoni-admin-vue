@@ -17,7 +17,7 @@ export default {
     {
       path: "/welcome",
       name: "Welcome",
-      component: () => import("@/views/welcome/index.vue"),
+      component: () => import("@/views/tool/welcome/index.vue"),
       meta: {
         title: $t("menus.hshome"),
         showLink: VITE_HIDE_HOME === "true" ? false : true

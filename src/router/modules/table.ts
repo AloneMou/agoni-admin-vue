@@ -14,7 +14,7 @@ export default {
     {
       path: "/pure-table/index",
       name: "PureTable",
-      component: () => import("@/views/pure-table/index.vue"),
+      component: () => import("@/views/tool/pure-table/index.vue"),
       meta: {
         title: $t("menus.hsPureTableBase")
       }
@@ -22,7 +22,7 @@ export default {
     {
       path: "/pure-table/high",
       name: "PureTableHigh",
-      component: () => import("@/views/pure-table/high.vue"),
+      component: () => import("@/views/tool/pure-table/high.vue"),
       meta: {
         title: $t("menus.hsPureTableHigh")
       }

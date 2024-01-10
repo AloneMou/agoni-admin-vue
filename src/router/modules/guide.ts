@@ -13,7 +13,7 @@ export default {
     {
       path: "/guide/index",
       name: "Guide",
-      component: () => import("@/views/guide/index.vue"),
+      component: () => import("@/views/tool/guide/index.vue"),
       meta: {
         title: $t("menus.hsguide")
       }

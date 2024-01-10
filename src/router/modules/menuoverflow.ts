@@ -12,7 +12,7 @@ export default {
     {
       path: "/menuoverflow/index",
       name: "MenuOverflow",
-      component: () => import("@/views/menuoverflow/index.vue"),
+      component: () => import("@/views/tool/menuoverflow/index.vue"),
       meta: {
         title: $t("menus.hsChildMenuoverflow"),
         showParent: true
