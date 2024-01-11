@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { IconJson } from "@/components/ReIcon/data";
-import { cloneDeep, isAllEmpty } from "@pureadmin/utils";
-import { ref, computed, CSSProperties, toRef, watch } from "vue";
+import {IconJson} from "@/components/ReIcon/data";
+import {cloneDeep, isAllEmpty} from "@pureadmin/utils";
+import {ref, computed, CSSProperties, toRef, watch} from "vue";
 import Search from "@iconify-icons/ri/search-eye-line";
 
 type ParameterCSSProperties = (item?: string) => CSSProperties | undefined;
@@ -10,7 +10,7 @@ defineOptions({
   name: "IconSelect"
 });
 
-const inputValue = defineModel({ type: String });
+const inputValue = defineModel({type: String});
 
 const iconList = ref(IconJson);
 const icon = ref();
@@ -40,13 +40,18 @@ const tabsList = [
   }
 ];
 
-const pageList = computed(() =>
-  copyIconList[currentActiveType.value]
-    .filter(i => i.includes(filterValue.value))
-    .slice(
-      (currentPage.value - 1) * pageSize.value,
-      currentPage.value * pageSize.value
-    )
+const pageList = computed(() => {
+    if (copyIconList[currentActiveType.value]) {
+      return copyIconList[currentActiveType.value]
+        .filter(i => i.includes(filterValue.value))
+        .slice(
+          (currentPage.value - 1) * pageSize.value,
+          currentPage.value * pageSize.value
+        )
+    } else {
+      return [];
+    }
+  }
 );
 
 const iconItemStyle = computed((): ParameterCSSProperties => {
@@ -71,8 +76,11 @@ function setVal() {
 function onBeforeEnter() {
   if (isAllEmpty(icon.value)) return;
   setVal();
+  if (!copyIconList[currentActiveType.value]) {
+    return;
+  }
   // 寻找当前图标在第几页
-  const curIconIndex = copyIconList[currentActiveType.value].findIndex(
+  const curIconIndex = copyIconList[currentActiveType.value]?.findIndex(
     i => i === icon.value
   );
   currentPage.value = Math.ceil((curIconIndex + 1) / pageSize.value);
@@ -82,7 +90,7 @@ function onAfterLeave() {
   filterValue.value = "";
 }
 
-function handleClick({ props }) {
+function handleClick({props}) {
   currentPage.value = 1;
   currentActiveType.value = props.name;
 }
@@ -103,16 +111,19 @@ function onClear() {
 
 watch(
   () => pageList.value,
-  () =>
-    (totalPage.value = copyIconList[currentActiveType.value].filter(i =>
+  () => {
+    if (!copyIconList[currentActiveType.value]) {
+      return;
+    }
+    totalPage.value = copyIconList[currentActiveType.value]?.filter(i =>
       i.includes(filterValue.value)
-    ).length),
-  { immediate: true }
+    ).length
+  }, {immediate: true}
 );
 watch(
   () => inputValue.value,
   val => val && setVal(),
-  { immediate: true }
+  {immediate: true}
 );
 watch(
   () => filterValue.value,
@@ -138,8 +149,8 @@ watch(
             <div
               class="w-[40px] h-[32px] cursor-pointer flex justify-center items-center"
             >
-              <IconifyIconOffline v-if="!icon" :icon="Search" />
-              <IconifyIconOnline v-else :icon="inputValue" />
+              <IconifyIconOffline v-if="!icon" :icon="Search"/>
+              <IconifyIconOnline v-else :icon="inputValue"/>
             </div>
           </template>
 

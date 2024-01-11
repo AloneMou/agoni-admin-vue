@@ -8,28 +8,28 @@ import {
   onMounted,
   onBeforeUnmount
 } from "vue";
-import { useI18n } from "vue-i18n";
+import {useI18n} from "vue-i18n";
 import Motion from "./utils/motion";
-import { useRouter } from "vue-router";
-import { message } from "@/utils/message";
-import { loginRules } from "./utils/rule";
+import {useRouter} from "vue-router";
+import {message} from "@/utils/message";
+import {loginRules} from "./utils/rule";
 import phone from "./components/phone.vue";
 import TypeIt from "@/components/ReTypeit";
 import qrCode from "./components/qrCode.vue";
 import regist from "./components/regist.vue";
 import update from "./components/update.vue";
-import { useNav } from "@/layout/hooks/useNav";
-import type { FormInstance } from "element-plus";
-import { $t, transformI18n } from "@/plugins/i18n";
-import { operates, thirdParty } from "./utils/enums";
-import { useLayout } from "@/layout/hooks/useLayout";
-import { useUserStoreHook } from "@/store/modules/user";
-import { initRouter, getTopMenu } from "@/router/utils";
-import { bg, avatar, illustration } from "./utils/static";
-import { ReImageVerify } from "@/components/ReImageVerify";
-import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import { useTranslationLang } from "@/layout/hooks/useTranslationLang";
-import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
+import {useNav} from "@/layout/hooks/useNav";
+import type {FormInstance} from "element-plus";
+import {$t, transformI18n} from "@/plugins/i18n";
+import {operates, thirdParty} from "./utils/enums";
+import {useLayout} from "@/layout/hooks/useLayout";
+import {useUserStoreHook} from "@/store/modules/user";
+import {initRouter, getTopMenu} from "@/router/utils";
+import {bg, avatar, illustration} from "./utils/static";
+import {ReImageVerify} from "@/components/ReImageVerify";
+import {useRenderIcon} from "@/components/ReIcon/src/hooks";
+import {useTranslationLang} from "@/layout/hooks/useTranslationLang";
+import {useDataThemeChange} from "@/layout/hooks/useDataThemeChange";
 
 import dayIcon from "@/assets/svg/day.svg";
 import darkIcon from "@/assets/svg/dark.svg";
@@ -53,13 +53,13 @@ const currentPage = computed(() => {
   return useUserStoreHook().currentPage;
 });
 
-const { t } = useI18n();
-const { initStorage } = useLayout();
+const {t} = useI18n();
+const {initStorage} = useLayout();
 initStorage();
-const { dataTheme, dataThemeChange } = useDataThemeChange();
+const {dataTheme, dataThemeChange} = useDataThemeChange();
 dataThemeChange();
-const { title, getDropdownItemStyle, getDropdownItemClass } = useNav();
-const { locale, translationCh, translationEn } = useTranslationLang();
+const {title, getDropdownItemStyle, getDropdownItemClass} = useNav();
+const {locale, translationCh, translationEn} = useTranslationLang();
 
 const ruleForm = reactive({
   username: "admin",
@@ -73,15 +73,14 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: ruleForm.password })
+        .loginByUsername({username: ruleForm.username, password: ruleForm.password})
         .then(res => {
-          if (res.success) {
-            // 获取后端路由
-            initRouter().then(() => {
-              router.push(getTopMenu(true).path);
-              message("登录成功", { type: "success" });
-            });
-          }
+          // 获取后端路由
+          initRouter().then(() => {
+            console.log(getTopMenu(true).path)
+            router.push(getTopMenu(true).path);
+            message("登录成功", {type: "success"});
+          });
         })
         .finally(() => (loading.value = false));
     } else {
@@ -92,7 +91,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
 };
 
 /** 使用公共函数，避免`removeEventListener`失效 */
-function onkeypress({ code }: KeyboardEvent) {
+function onkeypress({code}: KeyboardEvent) {
   if (code === "Enter") {
     onLogin(ruleFormRef.value);
   }
@@ -119,7 +118,7 @@ watch(loginDay, value => {
 
 <template>
   <div class="select-none">
-    <img :src="bg" class="wave" />
+    <img :src="bg" class="wave"/>
     <div class="flex-c absolute right-5 top-3">
       <!-- 主题 -->
       <el-switch
@@ -154,7 +153,7 @@ watch(loginDay, value => {
               @click="translationEn"
             >
               <span v-show="locale === 'en'" class="check-en">
-                <IconifyIconOffline :icon="Check" />
+                <IconifyIconOffline :icon="Check"/>
               </span>
               English
             </el-dropdown-item>
@@ -164,14 +163,14 @@ watch(loginDay, value => {
     </div>
     <div class="login-container">
       <div class="img">
-        <component :is="toRaw(illustration)" />
+        <component :is="toRaw(illustration)"/>
       </div>
       <div class="login-box">
         <div class="login-form">
-          <avatar class="avatar" />
+          <avatar class="avatar"/>
           <Motion>
             <h2 class="outline-none">
-              <TypeIt :values="[title]" :cursor="false" :speed="150" />
+              <TypeIt :values="[title]" :cursor="false" :speed="150"/>
             </h2>
           </Motion>
 
@@ -214,20 +213,20 @@ watch(loginDay, value => {
               </el-form-item>
             </Motion>
 
-<!--            <Motion :delay="200">-->
-<!--              <el-form-item prop="verifyCode">-->
-<!--                <el-input-->
-<!--                  v-model="ruleForm.verifyCode"-->
-<!--                  clearable-->
-<!--                  :placeholder="t('login.verifyCode')"-->
-<!--                  :prefix-icon="useRenderIcon('ri:shield-keyhole-line')"-->
-<!--                >-->
-<!--                  <template v-slot:append>-->
-<!--                    <ReImageVerify v-model:code="imgCode" />-->
-<!--                  </template>-->
-<!--                </el-input>-->
-<!--              </el-form-item>-->
-<!--            </Motion>-->
+            <!--            <Motion :delay="200">-->
+            <!--              <el-form-item prop="verifyCode">-->
+            <!--                <el-input-->
+            <!--                  v-model="ruleForm.verifyCode"-->
+            <!--                  clearable-->
+            <!--                  :placeholder="t('login.verifyCode')"-->
+            <!--                  :prefix-icon="useRenderIcon('ri:shield-keyhole-line')"-->
+            <!--                >-->
+            <!--                  <template v-slot:append>-->
+            <!--                    <ReImageVerify v-model:code="imgCode" />-->
+            <!--                  </template>-->
+            <!--                </el-input>-->
+            <!--              </el-form-item>-->
+            <!--            </Motion>-->
 
             <Motion :delay="250">
               <el-form-item>
@@ -253,7 +252,7 @@ watch(loginDay, value => {
                         placement="top"
                         :content="t('login.rememberInfo')"
                       >
-                        <IconifyIconOffline :icon="Info" class="ml-1" />
+                        <IconifyIconOffline :icon="Info" class="ml-1"/>
                       </el-tooltip>
                     </span>
                   </el-checkbox>
@@ -315,13 +314,13 @@ watch(loginDay, value => {
             </el-form-item>
           </Motion>
           <!-- 手机号登录 -->
-          <phone v-if="currentPage === 1" />
+          <phone v-if="currentPage === 1"/>
           <!-- 二维码登录 -->
-          <qrCode v-if="currentPage === 2" />
+          <qrCode v-if="currentPage === 2"/>
           <!-- 注册 -->
-          <regist v-if="currentPage === 3" />
+          <regist v-if="currentPage === 3"/>
           <!-- 忘记密码 -->
-          <update v-if="currentPage === 4" />
+          <update v-if="currentPage === 4"/>
         </div>
       </div>
     </div>

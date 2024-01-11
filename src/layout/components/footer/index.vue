@@ -6,7 +6,6 @@ const TITLE = getConfig("Title");
 
 <template>
   <footer class="layout-footer">
-    MIT © 2020-PRESENT
     <a
       class="ml-1 hover:text-primary"
       href="https://github.com/pure-admin"

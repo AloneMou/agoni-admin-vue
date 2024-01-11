@@ -105,7 +105,6 @@ const {
           align-whole="center"
           showOverflowTooltip
           table-layout="auto"
-          :loading="loading"
           :size="size"
           adaptive
           :data="dataList"

@@ -56,7 +56,7 @@ export const useUserStore = defineStore({
         getLogin(data)
           .then(data => {
             if (data) {
-              setToken(data.data);
+              setToken(data);
               resolve(data);
             }
           })
@@ -76,11 +76,11 @@ export const useUserStore = defineStore({
     },
     /** 刷新`token` */
     async handRefreshToken(data) {
-      return new Promise<RefreshTokenResult>((resolve, reject) => {
+      return new Promise<CommonResult<RefreshTokenResult>>((resolve, reject) => {
         refreshTokenApi(data)
           .then(data => {
             if (data) {
-              setToken(data.data);
+              setToken(data);
               resolve(data);
             }
           })

@@ -1,6 +1,6 @@
-import { $t } from "@/plugins/i18n";
-import { table } from "@/router/enums";
-import hot from "@/assets/svg/hot.svg?component";
+import {$t} from "@/plugins/i18n";
+import {table} from "@/router/enums";
+import hot from "@/assets/svg/hot.svg";
 
 export default {
   path: "/pure-table",
@@ -28,4 +28,4 @@ export default {
       }
     }
   ]
-} satisfies RouteConfigsTable;
+};

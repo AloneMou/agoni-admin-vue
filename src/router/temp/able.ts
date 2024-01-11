@@ -1,5 +1,5 @@
-import { $t } from "@/plugins/i18n";
-import { able } from "@/router/enums";
+import {$t} from "@/plugins/i18n";
+import {able} from "@/router/enums";
 
 export default {
   path: "/able",
@@ -183,4 +183,4 @@ export default {
       }
     }
   ]
-} satisfies RouteConfigsTable;
+};

@@ -13,6 +13,7 @@ import {stringify} from "qs";
 import NProgress from "../progress";
 import {getToken, formatToken} from "@/utils/auth";
 import {useUserStoreHook} from "@/store/modules/user";
+import {AxiosRequestHeaders} from "axios";
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
   // 请求超时时间
@@ -63,6 +64,11 @@ class PureHttp {
       async (config: PureHttpRequestConfig): Promise<any> => {
         // 开启进度条动画
         NProgress.start();
+        // 是否需要设置 token
+        let isToken = (config!.headers || {}).isToken === false
+        if (getToken()?.accessToken && !isToken) {
+          ;(config as Recordable).headers.Authorization = 'Bearer ' + getToken().accessToken // 让每个请求携带自定义token
+        }
         // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
         if (typeof config.beforeRequestCallback === "function") {
           config.beforeRequestCallback(config);
@@ -73,42 +79,49 @@ class PureHttp {
           return config;
         }
         config.headers["Tenant-Id"] = 1;
+
         /** 请求白名单，放置一些不需要token的接口（通过设置请求白名单，防止token过期后再请求造成的死循环问题） */
-        const whiteList = ["/refresh-token", "/login"];
-        return whiteList.find(url => url === config.url)
-          ? config
-          : new Promise(resolve => {
-            const data = getToken();
-            if (data) {
-              const now = new Date().getTime();
-              const expired = parseInt(data.expires) - now <= 0;
-              if (expired) {
-                if (!PureHttp.isRefreshing) {
-                  PureHttp.isRefreshing = true;
-                  // token过期刷新
-                  useUserStoreHook()
-                    .handRefreshToken({refreshToken: data.refreshToken})
-                    .then(res => {
-                      const token = res.data.accessToken;
-                      config.headers["Authorization"] = formatToken(token);
-                      PureHttp.requests.forEach(cb => cb(token));
-                      PureHttp.requests = [];
-                    })
-                    .finally(() => {
-                      PureHttp.isRefreshing = false;
-                    });
+        const whiteList = ["/auth/refresh-token", "/auth/login"];
+        whiteList.some((v) => {
+          if (config.url) {
+            config.url.indexOf(v) > -1
+            return (isToken = false)
+          }
+        })
+        const params = config.params || {}
+        const data = config.data || false
+        if (
+          config.method?.toUpperCase() === 'POST' &&
+          (config.headers as AxiosRequestHeaders)['Content-Type'] ===
+          'application/x-www-form-urlencoded'
+        ) {
+          config.data = qs.stringify(data)
+        }
+        // get参数编码
+        if (config.method?.toUpperCase() === 'GET' && params) {
+          let url = config.url + '?'
+          for (const propName of Object.keys(params)) {
+            const value = params[propName]
+            if (value !== void 0 && value !== null && typeof value !== 'undefined') {
+              if (typeof value === 'object') {
+                for (const val of Object.keys(value)) {
+                  const params = propName + '[' + val + ']'
+                  const subPart = encodeURIComponent(params) + '='
+                  url += subPart + encodeURIComponent(value[val]) + '&'
                 }
-                resolve(PureHttp.retryOriginalRequest(config));
               } else {
-                config.headers["Authorization"] = formatToken(
-                  data.accessToken
-                );
-                resolve(config);
+                url += `${propName}=${encodeURIComponent(value)}&`
               }
-            } else {
-              resolve(config);
             }
-          });
+          }
+          // 给 get 请求加上时间戳参数，避免从缓存中拿数据
+          // const now = new Date().getTime()
+          // params = params.substring(0, url.length - 1) + `?_t=${now}`
+          url = url.slice(0, -1)
+          config.params = {}
+          config.url = url
+        }
+        return config;
       },
       error => {
         return Promise.reject(error);
@@ -121,19 +134,20 @@ class PureHttp {
     const instance = PureHttp.axiosInstance;
     instance.interceptors.response.use(
       (response: PureHttpResponse) => {
-        const $config = response.config;
+        const {data, config} = response
+
         // 关闭进度条动画
         NProgress.done();
         // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
-        if (typeof $config.beforeResponseCallback === "function") {
-          $config.beforeResponseCallback(response);
-          return response.data;
+        if (typeof config.beforeResponseCallback === "function") {
+          config.beforeResponseCallback(response);
+          return data;
         }
         if (PureHttp.initConfig.beforeResponseCallback) {
           PureHttp.initConfig.beforeResponseCallback(response);
-          return response.data;
+          return data;
         }
-        return response.data;
+        return data;
       },
       (error: PureHttpError) => {
         const $error = error;
@@ -174,21 +188,43 @@ class PureHttp {
   }
 
   /** 单独抽离的post工具函数 */
-  public post<T, P>(
+  public async post<T, P>(
     url: string,
     params?: AxiosRequestConfig<T>,
     config?: PureHttpRequestConfig
   ): Promise<P> {
-    return this.request<P>("post", url, params, config);
+    const res = await this.request<P>("post", url, params, config);
+    return res.data as unknown as T
   }
 
   /** 单独抽离的get工具函数 */
-  public get<T, P>(
+  public async get<T, P>(
     url: string,
     params?: AxiosRequestConfig<T>,
     config?: PureHttpRequestConfig
   ): Promise<P> {
-    return this.request<P>("get", url, params, config);
+    const res = await this.request<P>("get", url, params, config);
+    return res.data as unknown as T
+  }
+
+  /** 单独抽离的get工具函数 */
+  public async put<T, P>(
+    url: string,
+    params?: AxiosRequestConfig<T>,
+    config?: PureHttpRequestConfig
+  ): Promise<P> {
+    const res = await this.request<P>("put", url, params, config);
+    return res.data as unknown as T
+  }
+
+  /** 单独抽离的get工具函数 */
+  public async delete<T, P>(
+    url: string,
+    params?: AxiosRequestConfig<T>,
+    config?: PureHttpRequestConfig
+  ): Promise<P> {
+    const res = await this.request<P>("delete", url, params, config);
+    return res.data as unknown as T
   }
 }
 

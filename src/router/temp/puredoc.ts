@@ -1,5 +1,5 @@
 import { doc } from "@/router/enums";
-import hot from "@/assets/svg/hot.svg?component";
+import hot from "@/assets/svg/hot.svg";
 const IFrame = () => import("@/layout/frameView.vue");
 
 export default {
@@ -21,4 +21,4 @@ export default {
       }
     }
   ]
-} satisfies RouteConfigsTable;
+} ;

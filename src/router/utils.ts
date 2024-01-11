@@ -195,19 +195,17 @@ function initRouter() {
       });
     } else {
       return new Promise(resolve => {
-        getAsyncRoutes().then(({data}) => {
-          // console.log(">>>>>",data)
-          handleAsyncRoutes(cloneDeep(data.menus));
-          storageLocal().setItem(key, data.menus);
+        getAsyncRoutes().then(({menus}) => {
+          handleAsyncRoutes(cloneDeep(menus));
+          storageLocal().setItem(key, menus);
           resolve(router);
         });
       });
     }
   } else {
     return new Promise(resolve => {
-      getAsyncRoutes().then(({data}) => {
-        // console.log("xxx",data.menus)
-        handleAsyncRoutes(cloneDeep(data.menus));
+      getAsyncRoutes().then(({menus}) => {
+        handleAsyncRoutes(cloneDeep(menus));
         resolve(router);
       });
     });
@@ -303,7 +301,6 @@ function addAsyncRoutes(arrRoutes: Array<RouteRecordRaw>) {
       backstage: true,
       icon: v.icon,
     }
-    console.log(v)
     if (!v.children) {
       delete v.children;
     }

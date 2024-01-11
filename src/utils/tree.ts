@@ -1,3 +1,11 @@
+export const defaultProps = {
+  children: 'children',
+  label: 'name',
+  value: 'id',
+  isLeaf: 'leaf',
+  emitPath: false // 用于 cascader 组件：在选中节点改变时，是否返回由该节点所在的各级菜单的值所组成的数组，若设置 false，则只返回该节点的值
+}
+
 /**
  * @description 提取菜单树中的每一项uniqueId
  * @param tree 树
@@ -125,6 +133,7 @@ export const appendFieldByUniqueId = (
   }
   return tree;
 };
+
 
 /**
  * @description 构造树型结构数据
